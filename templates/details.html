@@ -1,0 +1,226 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>{{ item.title }} - Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- mobile friendly -->
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; margin: 0; }
+        a.back-btn {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        a.back-btn img {
+            width: 28px;
+            height: 28px;
+            margin-right: 8px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        /* Left side - Main Image */
+        .main-image {
+            flex: 1;
+            min-width: 250px;
+        }
+        .main-image img {
+            width: 100%;
+            max-width: 350px;
+            border-radius: 8px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s ease; /* hover effect */
+        }
+        .main-image img:hover {
+            transform: scale(1.05); /* zoom effect */
+        }
+
+        /* Right side - Details */
+        .details {
+            flex: 2;
+            min-width: 250px;
+        }
+        .price {
+            color: green;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .description {
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        /* Contact Box */
+        .contact {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .contact h3 { margin-top: 0; }
+
+        /* More Images Grid */
+        .more-images {
+            margin-top: 20px;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .gallery img {
+            width: 100%;
+            border-radius: 8px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s ease; /* hover effect */
+        }
+        .gallery img:hover {
+            transform: scale(1.05); /* zoom effect */
+        }
+
+        #toggleBtn {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: none; /* Initially hidden */
+        }
+
+        /* Modal (Popup Image) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal img {
+            max-width: 90%;   /* a little bigger */
+            max-height: 90vh; /* scale to screen height */
+            border-radius: 10px;
+            display: block;
+            margin: auto;
+        }
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 30px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { flex-direction: column; align-items: center; }
+            .main-image img { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Back Button -->
+    <a class="back-btn" onclick="history.back()">
+        <img src="https://cdn-icons-png.flaticon.com/128/7710/7710436.png" alt="Back">
+        Back
+    </a>
+
+    <h1>{{ item.title }}</h1>
+
+    <div class="container">
+        <!-- Left: Main Image -->
+        <div class="main-image">
+            <img src="{{ item.image }}" alt="{{ item.title }}" onclick="openModal(this.src)">
+        </div>
+
+        <!-- Right: Details + Gallery -->
+        <div class="details">
+            <p><b>Item Code:</b> {{ item.author }}</p>
+            <p class="price">Price: ₹{{ item.price }}</p>
+            <p><b>Category:</b> {{ item.category }}</p>
+            <p class="description">{{ item.description }}</p>
+
+            <!-- More Images -->
+            <div class="more-images">
+                <div class="gallery" id="gallery">
+                    {% if item.image2 %}
+                        <img src="{{ item.image2 }}" alt="Extra Image" onclick="openModal(this.src)">
+                    {% endif %}
+                    {% if item.image3 %}
+                        <img src="{{ item.image3 }}" alt="Extra Image" onclick="openModal(this.src)">
+                    {% endif %}
+                    {% if item.image4 %}
+                        <img src="{{ item.image4 }}" alt="Extra Image" onclick="openModal(this.src)">
+                    {% endif %}
+                    {% if item.image5 %}
+                        <img src="{{ item.image5 }}" alt="Extra Image" onclick="openModal(this.src)">
+                    {% endif %}
+                </div>
+                <button id="toggleBtn" onclick="toggleImages()">Show More Images</button>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="contact">
+                <h3>Contact</h3>
+                <p><b>Address:</b> priyafashiondesigning, Mullakkadu, Near Sam School, Tuticorin, Tamil Nadu - 628005 </p>
+                <p><b>Email:</b> priyafashiondesignning@gmail.com </p>
+                <p><b>Whatsapp:</b> +91 9944691999 </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Popup -->
+    <div id="myModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img id="modalImage" src="">
+    </div>
+
+    <script>
+        const gallery = document.getElementById("gallery");
+        const toggleBtn = document.getElementById("toggleBtn");
+        const images = gallery.querySelectorAll("img");
+
+        // Hide ALL images initially
+        if (images.length > 0) {
+            images.forEach(img => img.style.display = "none");
+            toggleBtn.style.display = "inline-block"; // Show button only if images exist
+        }
+
+        function toggleImages() {
+            let anyHidden = Array.from(images).some(img => img.style.display === "none");
+            
+            images.forEach(img => {
+                img.style.display = anyHidden ? "block" : "none";
+            });
+
+            toggleBtn.innerText = anyHidden ? "Collapse images" : "See more images";
+        }
+
+        // Modal functions
+        function openModal(src) {
+            document.getElementById("myModal").style.display = "flex";
+            document.getElementById("modalImage").src = src;
+        }
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+    </script>
+</body>
+</html>

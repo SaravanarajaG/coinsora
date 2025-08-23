@@ -1,0 +1,113 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>Priya Fashion Designing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=0.45">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        /* Category heading */
+        h2 {
+            margin-top: 40px;
+            margin-bottom: 15px;
+            font-size: 26px;
+            color: #222;
+            text-align: left;
+            padding-bottom: 5px;
+        }
+        h2 a {
+            text-decoration: none;
+            color: #222;
+        }
+        h2 a:hover {
+            color: #d63384;
+        }
+
+        .row {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding: 10px 0;
+            scroll-behavior: smooth;
+        }
+        .row::-webkit-scrollbar { display: none; }
+        .row { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .item {
+            flex: 0 0 auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            width: 280px;   
+            text-align: center;
+            background: #f9f9f9;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            min-height: 400px;
+        }
+        .item:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+        .item img {
+            width: 240px;   
+            height: 320px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+        .item a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        /* Alignment fix */
+        .item h3 {
+            margin: 8px 0;
+            font-size: 18px;
+            min-height: 40px; /* ensures space for 2 lines */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .item p.author {
+            margin: 5px 0;
+            font-size: 14px;
+            min-height: 20px; /* keeps author aligned */
+        }
+        .item p.price {
+            margin: 5px 0;
+            color: green;
+            font-weight: bold;
+            font-size: 15px;
+            min-height: 20px; /* keeps price aligned */
+        }
+    </style>
+</head>
+<body>
+    <h1>Design Collections</h1>
+
+    {% for category, items in categories.items() %}
+        <h2><a href="/category/{{ category }}">{{ category }}</a></h2>
+        <div class="row">
+            {% for item in items %}
+            <div class="item">
+                <a href="/item/{{ item.id }}">
+                    <img src="{{ item.image }}" alt="{{ item.title }}">
+                    <h3>{{ item.title }}</h3>
+                    <p class="author">{{ item.author }}</p>
+                    <p class="price">₹{{ item.price }}</p>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</body>
+</html>

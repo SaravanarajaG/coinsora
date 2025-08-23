@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ category }} Designs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=0.555">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #333;
+            gap: 8px;
+        }
+        .back-btn img {
+            width: 24px;
+            height: 24px;
+        }
+        .back-btn:hover {
+            color: #000;
+            transform: translateX(-3px);
+            transition: 0.2s;
+        }
+        .row {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 20px;
+        }
+        .item {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            min-height: 400px;
+            width: 272px;
+        }
+        .item:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .item a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .item img {
+            width: 260px;   
+            height: 320px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+        .item h3 {
+            margin: 8px 0;
+            font-size: 18px;
+            min-height: 40px; /* Ensures 2 lines space for title */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .item p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .item .author {
+            min-height: 20px; /* Fixes alignment of author */
+        }
+        .item .price {
+            color: green;
+            font-weight: bold;
+            font-size: 15px;
+            margin-top: 8px;
+            min-height: 20px; /* Keeps price aligned */
+        }
+    </style>
+</head>
+<body>
+    <!-- Back button with icon -->
+    <a href="javascript:history.back()" class="back-btn">
+        <img src="https://cdn-icons-png.flaticon.com/128/7710/7710436.png" alt="Back">
+        Back
+    </a>
+
+    <h2>{{ category }} Designs</h2>
+    <div class="row">
+        {% for item in items %}
+        <div class="item">
+            <a href="/item/{{ item.id }}">
+                <img src="{{ item.image }}" alt="{{ item.title }}">
+                <h3>{{ item.title }}</h3>
+                <p class="author">{{ item.author }}</p>
+                <p class="price">₹{{ item.price }}</p>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
