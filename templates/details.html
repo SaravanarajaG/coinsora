@@ -75,11 +75,15 @@
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
+            gap: 15px;
             margin-top: 10px;
-        }
+            justify-items: center;
+        }   
+
         .gallery img {
             width: 100%;
+            height: 220px;           /* fixed portrait height */
+            aspect-ratio: 3 / 4;   
             border-radius: 8px;
             object-fit: cover;
             cursor: pointer;
@@ -179,9 +183,9 @@
             <!-- Contact Info -->
             <div class="contact">
                 <h3>Contact</h3>
-                <p><b>Address:</b> Coinsora, Mullakkadu, Near Sam School, Tuticorin, Tamil Nadu - 628005 </p>
                 <p><b>Email:</b> priyafashiondesignning@gmail.com </p>
                 <p><b>Whatsapp:</b> +91 9894675321 </p>
+                <p><b>Instagram:</b> coinsora </p>
             </div>
         </div>
     </div>
